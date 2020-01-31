@@ -9,27 +9,28 @@ def get_call(url):
     response = requests.get(url, headers=headers)
     print("Ok")
 def get_lock():
+    Port_=2020
+    Server_="10.1.1.2"
     s = socket.socket()
-    s.connect(('10.1.1.2',12345))
+    s.connect((Server_,Port_))
     str = "bye"
     s.send(str.encode());
     res=s.recv(5)
     print (res)
     s.close()
-
+Button_Gpio_Pin=12
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
-GPIO.setup(12, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(Button_Gpio_Pin, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 URL = "http://10.1.1.10:8080/relay/off.php"
 URL2= "http://10.1.1.10:8080/relay/on.php"
 while True:  
     if GPIO.input(12) == GPIO.HIGH:
         get_call(URL)
-        (URL,URL2)=(URL2,URL)
+        (URL,URL2)=(URL2,URL) #change the button status
         time.sleep(2)
         if URL2=="http://10.1.1.10:8080/relay/off.php":
-           st=1 #statement control
-           
+           st=1 #statement control(off)
            if  st==1:
                st=0
                if st==0:
